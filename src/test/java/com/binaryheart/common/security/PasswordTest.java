@@ -54,13 +54,7 @@ public class PasswordTest {
     @Test
     public void createPasswordWithSHA512() {
         String generatedPasswordHash = PasswordUtils.createPassword(RAW_PASSWORD, HashAlgorithm.SHA512);
-        System.out.println("FORMATTED: " + FORMATTED_HASH);
-        System.out.println("GENERATED: " + generatedPasswordHash);
         Assert.assertNotEquals(FORMATTED_HASH, generatedPasswordHash);
     }
     
-    //@Test
-    public void verifyPassword() {
-        
-    }
 }
