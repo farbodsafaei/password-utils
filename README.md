@@ -12,7 +12,7 @@ The first part is the name of the algorithm, second section is the salt value an
 
 ```SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==```
 
-### How to
+#### How to
 
 Simply provide the raw password to the ```createPassword()``` function and select a desired hash algorithm:
 
