@@ -6,13 +6,13 @@ PasswordUtils is a fast, simple and lightweight utility class containing series 
 
 #### Output format
 
-All the passwords are salted and hashed by selecting a desired hash algorithm. The secure salted and hashed passwords are generated in the below format to be used in the applications as desired:
+All passwords are salted and hashed by selecting a desired hash algorithm. The secure salted and hashed passwords are generated in the below format to be used in the applications as desired:
 
 ```
 algorithm:salt:hash
 ```
 
-The first part is the name of the algorithm, second section is the salt value and third section is the hashed value of the raw password and salt  combined. The separator character is a ':' (colon character). The salt and hash are Base64 encoded at the end when generating the final hash string.
+The first section is the name of the algorithm in plaintext. Second section is the salt value encoded in Based64 and third section is the hashed value of the raw password and salt combined then encoded in Base64. The separator character is a ':' (colon character). Example:
 
 ```
 SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==
@@ -20,14 +20,14 @@ SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lO
 
 #### How to
 
-Simply provide the raw password to the ```createPassword()``` function and select a desired hash algorithm:
+Simply pass the raw password (in plaintext) to the ```createPassword()``` method with a desired hash algorithm:
 
 ```java
 String rawPassword = "badPassword1234";
 String result = PasswordUtils.createPassword(rawPassword, HashAlgorithm.SHA512);
 ```
 
-For faster and easier usage, no algorithm needed to be supplied and a default (SHA-256) hash algorithm will be used:
+For faster and easier usage, no algorithm is required to be passed and a default (SHA-256) hash algorithm will be used:
   
 ```java
 String rawPassword = "badPassword1234";
@@ -40,7 +40,7 @@ The result string will contain a properly formatted password hash:
 SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==
 ```
 
-To verify a raw password with a hashed password (with the same format created in this class) simply use ```verifyPassword()``` method:
+To verify a raw password (in plaintext) with a hashed password (with the same format created using this class) simply use ```verifyPassword()``` method:
 
 ```java
 String rawPassword = "badPassword1234";
