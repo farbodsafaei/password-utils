@@ -56,6 +56,7 @@ public final class PasswordUtils {
     private static final int HASH_SECTION_SALT_INDEX = 1;
     private static final int DEFAULT_SALT_SEED_SIZE = 16;
     private static final String SECTION_SEPARATOR = ":";
+    private static final String ERROR_NULL_PASSWORD = "Password is null or empty!";
     private static final SeedAlgorithm DEFAULT_RANDOM_SEED_ALGORITHM = SeedAlgorithm.SHA1PRNG;
     private static final HashAlgorithm DEFAULT_HASH_ALGORITHM = HashAlgorithm.SHA256;
 
@@ -82,10 +83,17 @@ public final class PasswordUtils {
      * 
      * @param rawPassword
      *            raw password value in in {@code String} format
+     *            
      * @return String representation of a Base64 encoded hashed password and 
      *            Base64 encoded salt with the format of {@code algorithm:salt:hash}
+     * 
+     * @throws IllegalArgumentException
+     *            if the parameter is null or empty string
      */
-    public static String createPassword(final String rawPassword) {
+    public static String createPassword(final String rawPassword) throws IllegalArgumentException {
+        if (rawPassword == null || rawPassword.isEmpty()) {
+            throw new IllegalArgumentException(ERROR_NULL_PASSWORD);
+        }
         return createPassword(rawPassword, DEFAULT_HASH_ALGORITHM);
     }
 
@@ -110,8 +118,15 @@ public final class PasswordUtils {
      *            
      * @return String representation of a hashed password and salt with the
      *         format of {@code algorithm:salt:hash}
+     *         
+     * @throws IllegalArgumentException
+     *            if rawPassword parameter is null or empty string
+     *         
      */
-    public static String createPassword(final String rawPassword, HashAlgorithm algorithm) {
+    public static String createPassword(final String rawPassword, HashAlgorithm algorithm) throws IllegalArgumentException {
+        if (rawPassword == null || rawPassword.isEmpty()) {
+            throw new IllegalArgumentException(ERROR_NULL_PASSWORD);
+        }        
         byte[] salt = generateRandomSalt();
         String hash = createHashedPassword(rawPassword, salt, algorithm);
         return generateformattedHash(hash, Base64.getEncoder().encodeToString(salt), algorithm);
@@ -162,23 +177,31 @@ public final class PasswordUtils {
     }
 
     /**
-     * Verifies a provided raw password (in simple a text string, 
-     * unsalted and not hashed) by salting, hashing it and comparing it 
-     * to a target value (usually coming from database).
+     * Verifies a provided raw password (in plaintext, unsalted and not hashed)
+     * by salting and hashing it and comparing it to a target value (usually 
+     * coming from database).
      * 
      * @param rawPassword
      *            Raw password in plain text
      * 
      * @param hashedPassword
-     *            Hashed password (target) to compare with
+     *            Fully formatted hashed password (target) to compare with, 
+     *            formatted as {@code algorithm:salt:hash}
      * 
      * @return {@code true} if password matches the hashed value and
      *         {@code false} if the password does not match the hashed value
      *         
      * @throws InvalidHashException
      *          if hashedPassword does not have the format of {@code algorithm:salt:hash}
+     *          
+     * @throws IllegalArgumentException
+     *            if any of parameters are null or empty string
      */
-    public static boolean verifyPassword(final String rawPassword, final String hashedPassword) throws InvalidHashException {
+    public static boolean verifyPassword(final String rawPassword, final String hashedPassword) 
+            throws IllegalArgumentException, InvalidHashException {
+        if (rawPassword == null || rawPassword.isEmpty() || hashedPassword == null || hashedPassword.isEmpty()) {
+            throw new IllegalArgumentException(ERROR_NULL_PASSWORD);
+        }                
         boolean result = false;
         String[] suppliedPasswordArray = hashedPassword.split(SECTION_SEPARATOR);
         if (suppliedPasswordArray.length != HASH_SECTION_SIZE) {
