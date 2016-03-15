@@ -19,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Base64;
 
 import com.binaryheart.common.exception.InvalidHashException;
@@ -50,7 +49,7 @@ import com.binaryheart.common.exception.InvalidHashException;
  * @author Farbod Safaei - farbod@binaryheart.com
  *
  */
-public class PasswordUtils {
+public final class PasswordUtils {
 
     private static int HASH_SECTION_SIZE = 3;
     private static int HASH_SECTION_ALGORITHM_INDEX = 0;
