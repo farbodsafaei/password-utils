@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>password-utils by farbodsafaei</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">password-utils</h1>
+      <h2 class="project-tagline">PasswordUtils is a fast, simple, and lightweight utility class containing series of methods for creating and comparing secure passwords in Java</h2>
+      <a href="https://github.com/farbodsafaei/password-utils" class="btn">View on GitHub</a>
+      <a href="https://github.com/farbodsafaei/password-utils/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/farbodsafaei/password-utils/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <p><a href="https://travis-ci.org/farbodsafaei/password-utils"><img src="https://travis-ci.org/farbodsafaei/password-utils.svg?branch=master" alt="Build Status"></a></p>
+
+<h1>
+<a id="password-utils" class="anchor" href="#password-utils" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>password-utils</h1>
+
+<p>PasswordUtils is a fast, simple and lightweight utility class containing series of methods for creating, comparing, and generating secure passwords to be stored on database or used for other purposes. It uses Java's latest build-in hashing algorithms and is independent of any other libraries.</p>
+
+<h4>
+<a id="output-format" class="anchor" href="#output-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Output format</h4>
+
+<p>All the passwords are salted and hashed by selecting a desired hash algorithm. The secure salted and hashed passwords are generated in the below format to be used in the applications as desired:</p>
+
+<pre><code>algorithm:salt:hash
+</code></pre>
+
+<p>The first part is the name of the algorithm, second section is the salt value and third section is the hashed value of the raw password and salt  combined. The separator character is a ':' (colon character). The salt and hash are Base64 encoded at the end when generating the final hash string.</p>
+
+<pre><code>SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==
+</code></pre>
+
+<h4>
+<a id="how-to" class="anchor" href="#how-to" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to</h4>
+
+<p>Simply provide the raw password to the createPassword() function and select a desired hash algorithm:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">String</span> rawPassword <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>badPassword1234<span class="pl-pds">"</span></span>;
+<span class="pl-smi">String</span> result <span class="pl-k">=</span> <span class="pl-smi">PasswordUtils</span><span class="pl-k">.</span>createPassword(rawPassword, <span class="pl-smi">HashAlgorithm</span><span class="pl-c1"><span class="pl-k">.</span>SHA512</span>);</pre></div>
+
+<p>For faster and easier usage, no algorithm needed to be supplied and a default (SHA-256) hash algorithm will be used:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">String</span> rawPassword <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>badPassword1234<span class="pl-pds">"</span></span>;
+<span class="pl-smi">String</span> result <span class="pl-k">=</span> <span class="pl-smi">PasswordUtils</span><span class="pl-k">.</span>createPassword(rawPassword);</pre></div>
+
+<p>The result string will contain a properly formatted password hash:  </p>
+
+<pre><code>SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==
+</code></pre>
+
+<p>To verify a raw password with a hashed password (with the same format created in this class):</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">String</span> rawPassword <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>badPassword1234<span class="pl-pds">"</span></span>;
+<span class="pl-smi">String</span> alreadyHashedPassword <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==<span class="pl-pds">"</span></span>;
+<span class="pl-k">boolean</span> isEqual <span class="pl-k">=</span> <span class="pl-smi">PasswordUtils</span><span class="pl-k">.</span>verifyPassword(rawPassword, alreadyHashedPassword);</pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/farbodsafaei/password-utils">password-utils</a> is maintained by <a href="https://github.com/farbodsafaei">farbodsafaei</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
