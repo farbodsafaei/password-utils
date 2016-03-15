@@ -22,7 +22,7 @@ Simply provide the raw password to the createPassword() function and select a de
 
 ```java
 String rawPassword = "badPassword1234";
-String result = createPassword(rawPassword, HashAlgorithm.SHA512);
+String result = PasswordUtils.createPassword(rawPassword, HashAlgorithm.SHA512);
 ```
 
 For faster and easier usage, no algorithm needed to be supplied and a default (SHA-256) hash algorithm will be used:
