@@ -45,5 +45,5 @@ To verify a raw password (in plaintext) with a hashed password (with the same fo
 ```java
 String rawPassword = "badPassword1234";
 String alreadyHashedPassword = "SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==";
-boolean isEqual = PasswordUtils.verifyPassword(rawPassword, alreadyHashedPassword);
+boolean result = PasswordUtils.verifyPassword(rawPassword, alreadyHashedPassword);
 ```
