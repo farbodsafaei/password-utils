@@ -51,14 +51,13 @@ import com.binaryheart.common.exception.InvalidHashException;
  */
 public final class PasswordUtils {
 
-    private static int HASH_SECTION_SIZE = 3;
-    private static int HASH_SECTION_ALGORITHM_INDEX = 0;
-    private static int HASH_SECTION_SALT_INDEX = 1;
-    private static int HASH_SECTION_HASH_INDEX = 2;
-    private static int DEFAULT_SALT_SEED_SIZE = 16;
-    private static String SECTION_SEPARATOR = ":";
-    private static SeedAlgorithm DEFAULT_RANDOM_SEED_ALGORITHM = SeedAlgorithm.SHA1PRNG;
-    private static HashAlgorithm DEFAULT_HASH_ALGORITHM = HashAlgorithm.SHA256;
+    private static final int HASH_SECTION_SIZE = 3;
+    private static final int HASH_SECTION_ALGORITHM_INDEX = 0;
+    private static final int HASH_SECTION_SALT_INDEX = 1;
+    private static final int DEFAULT_SALT_SEED_SIZE = 16;
+    private static final String SECTION_SEPARATOR = ":";
+    private static final SeedAlgorithm DEFAULT_RANDOM_SEED_ALGORITHM = SeedAlgorithm.SHA1PRNG;
+    private static final HashAlgorithm DEFAULT_HASH_ALGORITHM = HashAlgorithm.SHA256;
 
     // No reason to instantiate
     private PasswordUtils() {}
@@ -118,7 +117,7 @@ public final class PasswordUtils {
         return generateformattedHash(hash, Base64.getEncoder().encodeToString(salt), algorithm);
     }
 
-    private static String generateformattedHash(String hash, String salt, HashAlgorithm algorithm) {
+    private static String generateformattedHash(final String hash, final String salt, HashAlgorithm algorithm) {
         StringBuilder result = new StringBuilder(algorithm.name());
         result.append(SECTION_SEPARATOR).append(salt).append(SECTION_SEPARATOR).append(hash);
         return result.toString();
@@ -142,13 +141,19 @@ public final class PasswordUtils {
 
     /**
      * Generates a salt value using a seed algorithm and a seed size
-     * 
-     * @return Base64 encoded salt value
+     *          
+     * @param seedAlgorithm
+     *          A value from {@code SeedAlgorithm}
+     *           
+     * @param seedSize
+     *          Size of seed
+     *          
+     * @return  byte array of random generated salt
      * 
      * @throws IllegalArgumentException
-     *          If seed algorithm does not exist
+     *          If seed algorithm is not correct or does not exist
      */
-    public static byte[] generateRandomSalt(SeedAlgorithm seedAlgorithm, int seedSize) throws IllegalArgumentException {
+    public static byte[] generateRandomSalt(SeedAlgorithm seedAlgorithm, final int seedSize) throws IllegalArgumentException {
         try {
             return SecureRandom.getInstance(seedAlgorithm.name()).generateSeed(seedSize);
         } catch (NoSuchAlgorithmException e) {
@@ -173,7 +178,7 @@ public final class PasswordUtils {
      * @throws InvalidHashException
      *          if hashedPassword does not have the format of {@code algorithm:salt:hash}
      */
-    public static boolean verifyPassword(String rawPassword, String hashedPassword) throws InvalidHashException {
+    public static boolean verifyPassword(final String rawPassword, final String hashedPassword) throws InvalidHashException {
         boolean result = false;
         String[] suppliedPasswordArray = hashedPassword.split(SECTION_SEPARATOR);
         if (suppliedPasswordArray.length != HASH_SECTION_SIZE) {

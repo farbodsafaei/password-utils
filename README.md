@@ -40,7 +40,7 @@ The result string will contain a properly formatted password hash:
 SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==
 ```
 
-To verify a raw password with a hashed password (with the same format created in this class):
+To verify a raw password with a hashed password (with the same format created in this class) simply use verifyPassword() method:
 
 ```java
 String rawPassword = "badPassword1234";
