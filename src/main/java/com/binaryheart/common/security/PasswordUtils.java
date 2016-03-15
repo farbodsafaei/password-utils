@@ -24,10 +24,10 @@ import java.util.Base64;
 import com.binaryheart.common.exception.InvalidHashException;
 
 /**
- * PasswordUtils is a fast and lightweight utility class containing series 
- * of methods for creating, comparing and generating secure passwords to be 
- * stored on the database or used for other security reasons using latest 
- * hash algorithms.
+ * PasswordUtils is a fast, simple and lightweight utility class containing 
+ * series of methods for creating, comparing, and generating secure passwords 
+ * to be stored on database or used for other purposes. It uses Java's latest 
+ * build-in hashing algorithms and is independent of any other libraries.
  * 
  * <p>
  * All the passwords are salted and hashed using a selectable hash algorithm. 
