@@ -16,6 +16,11 @@ The first section is the name of the algorithm in plaintext. Second section is t
 SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==
 ```
 
+Break-down of above line:  
+Algorithm: ```SHA512```  
+Salt (Base64): ```nkQfEBbs7FwwcADCq5UGtg==```  
+Hash (Base64): ```H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==```  
+
 #### How to
 
 Simply pass the raw password (in plaintext) to the ```createPassword()``` method with a desired hash algorithm:
