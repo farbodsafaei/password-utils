@@ -24,10 +24,10 @@ import java.util.Base64;
 import com.binaryheart.common.exception.InvalidHashException;
 
 /**
- * PasswordUtils is a fast, simple and lightweight utility class containing 
+ * PasswordUtils is a fast, simple, and lightweight utility class containing 
  * series of methods for creating, comparing, and generating secure passwords 
  * to be stored on database or used for other purposes. It uses Java's latest 
- * build-in hashing algorithms and is independent of any other libraries.
+ * built-in hashing algorithms and is independent of any other libraries.
  * 
  * <p>
  * All the passwords are salted and hashed using a selectable hash algorithm. 
@@ -55,9 +55,9 @@ public final class PasswordUtils {
     private static int HASH_SECTION_ALGORITHM_INDEX = 0;
     private static int HASH_SECTION_SALT_INDEX = 1;
     private static int HASH_SECTION_HASH_INDEX = 2;
-    private static int SALT_SEED_SIZE = 16;
+    private static int DEFAULT_SALT_SEED_SIZE = 16;
     private static String SECTION_SEPARATOR = ":";
-    private static String RANDOM_SEED_ALGORITHM = "SHA1PRNG";
+    private static SeedAlgorithm DEFAULT_RANDOM_SEED_ALGORITHM = SeedAlgorithm.SHA1PRNG;
     private static HashAlgorithm DEFAULT_HASH_ALGORITHM = HashAlgorithm.SHA256;
 
     // No reason to instantiate
@@ -137,8 +137,20 @@ public final class PasswordUtils {
      *          If seed algorithm does not exist
      */
     private static byte[] generateRandomSalt() throws IllegalArgumentException {
+        return generateRandomSalt(DEFAULT_RANDOM_SEED_ALGORITHM, DEFAULT_SALT_SEED_SIZE);
+    }
+
+    /**
+     * Generates a salt value using a seed algorithm and a seed size
+     * 
+     * @return Base64 encoded salt value
+     * 
+     * @throws IllegalArgumentException
+     *          If seed algorithm does not exist
+     */
+    public static byte[] generateRandomSalt(SeedAlgorithm seedAlgorithm, int seedSize) throws IllegalArgumentException {
         try {
-            return SecureRandom.getInstance(RANDOM_SEED_ALGORITHM).generateSeed(SALT_SEED_SIZE);
+            return SecureRandom.getInstance(seedAlgorithm.name()).generateSeed(seedSize);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalArgumentException(e);
         }
