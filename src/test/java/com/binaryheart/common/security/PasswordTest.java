@@ -49,7 +49,7 @@ public class PasswordTest {
     }
 
     /**
-     * Making sure the same raw password does generate exact hash (random salt verification)
+     * Making sure the same raw password does not generate the same hash (random salt verification)
      */
     @Test
     public void createPasswordWithSHA512() {
