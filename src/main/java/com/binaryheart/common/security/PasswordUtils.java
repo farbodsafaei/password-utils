@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Base64;
 
 import com.binaryheart.common.exception.InvalidHashException;
@@ -69,6 +70,7 @@ public class PasswordUtils {
             MessageDigest messageDigest = MessageDigest.getInstance(algorithm.getAlgorithm());
             messageDigest.update(salt);
             byte[] hashed = messageDigest.digest(rawPasswordByte);
+            messageDigest.reset();
             return Base64.getEncoder().encodeToString(hashed);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalArgumentException(e);
@@ -114,12 +116,12 @@ public class PasswordUtils {
     public static String createPassword(final String rawPassword, HashAlgorithm algorithm) {
         byte[] salt = generateRandomSalt();
         String hash = createHashedPassword(rawPassword, salt, algorithm);
-        return generateformattedHash(hash, salt, algorithm);
+        return generateformattedHash(hash, Base64.getEncoder().encodeToString(salt), algorithm);
     }
 
-    private static String generateformattedHash(String hash, byte[] salt, HashAlgorithm algorithm) {
+    private static String generateformattedHash(String hash, String salt, HashAlgorithm algorithm) {
         StringBuilder result = new StringBuilder(algorithm.name());
-        result.append(SECTION_SEPARATOR).append(new String(salt)).append(SECTION_SEPARATOR).append(new String(hash));
+        result.append(SECTION_SEPARATOR).append(salt).append(SECTION_SEPARATOR).append(hash);
         return result.toString();
     }
     
@@ -135,10 +137,9 @@ public class PasswordUtils {
      * @throws IllegalArgumentException
      *          If seed algorithm does not exist
      */
-    public static byte[] generateRandomSalt() throws IllegalArgumentException {
+    private static byte[] generateRandomSalt() throws IllegalArgumentException {
         try {
-            byte[] salt = SecureRandom.getInstance(RANDOM_SEED_ALGORITHM).generateSeed(SALT_SEED_SIZE);
-            return Base64.getEncoder().encode(salt);
+            return SecureRandom.getInstance(RANDOM_SEED_ALGORITHM).generateSeed(SALT_SEED_SIZE);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalArgumentException(e);
         }
@@ -168,9 +169,9 @@ public class PasswordUtils {
             throw new InvalidHashException();
         }
         HashAlgorithm algorithm = HashAlgorithm.valueOf(suppliedPasswordArray[HASH_SECTION_ALGORITHM_INDEX]);
-        byte[] salt = suppliedPasswordArray[HASH_SECTION_SALT_INDEX].getBytes();
+        byte[] salt = Base64.getDecoder().decode(suppliedPasswordArray[HASH_SECTION_SALT_INDEX]);
         String hash = createHashedPassword(rawPassword, salt, algorithm);
-        String tempHashedPassword = generateformattedHash(hash, salt, algorithm);
+        String tempHashedPassword = generateformattedHash(hash, Base64.getEncoder().encodeToString(salt), algorithm);
         if (tempHashedPassword.equals(hashedPassword)) {
             result = true;
         }
