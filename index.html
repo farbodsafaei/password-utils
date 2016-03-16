@@ -12,7 +12,7 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">password-utils</h1>
-      <h2 class="project-tagline">PasswordUtils is a fast, simple, and lightweight utility class containing series of methods for creating and comparing secure passwords in Java</h2>
+      <h2 class="project-tagline">PasswordUtils is a fast, simple, and lightweight utility class containing series of methods for creating, comparing, hashing, and random generating secure passwords in Java</h2>
       <a href="https://github.com/farbodsafaei/password-utils" class="btn">View on GitHub</a>
       <a href="https://github.com/farbodsafaei/password-utils/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/farbodsafaei/password-utils/tarball/master" class="btn">Download .tar.gz</a>
@@ -30,13 +30,11 @@
 
 <p>All passwords are salted and hashed by selecting a desired hash algorithm. The secure salted and hashed passwords are generated in the below format to be used in the applications as desired:</p>
 
-<pre><code>algorithm:salt:hash
-</code></pre>
+<p><code>algorithm:salt:hash</code></p>
 
 <p>The first section is the name of the algorithm in plaintext. Second section is the salt value encoded in Based64 and third section is the hashed value of the raw password and salt combined then encoded in Base64. The separator character is a ':' (colon character). Example:</p>
 
-<pre><code>SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==
-</code></pre>
+<p><code>SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==</code></p>
 
 <p>Break-down of above line:<br>
 Algorithm: <code>SHA512</code><br>
@@ -58,8 +56,7 @@ Hash (Base64): <code>H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkM
 
 <p>The result string will contain a properly formatted password hash:  </p>
 
-<pre><code>SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==
-</code></pre>
+<p><code>SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==</code></p>
 
 <p>To verify a raw password (in plaintext) with a hashed password (with the same format created using this class) simply use <code>verifyPassword()</code> method:</p>
 
@@ -75,6 +72,14 @@ Hash (Base64): <code>H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkM
 <p>Random password generator in this class can be used to create secure temporary passwords. It uses a random combination of letters, numbers and special characters to generate a password. Values are taken from ranges: <code>[A-Z] [a-z] [0-9]</code> and special characters:</p>
 
 <p><code>! "  #  $   %   &amp;  '  (  )  *  +  ,  -  .  /  :  ;  &lt;  =  &gt;  ?  @ [  \  ]  ^  _  `  {  |  }  ~</code>   </p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-java"><pre> <span class="pl-smi">PasswordUtils</span><span class="pl-k">.</span>generateRandomPassword();</pre></div>
+
+<p>the output will be a sequence of random characters based on the above criteria, such as:</p>
+
+<p><code>_&amp;4'IW2;q%</code></p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/farbodsafaei/password-utils">password-utils</a> is maintained by <a href="https://github.com/farbodsafaei">farbodsafaei</a>.</span>
