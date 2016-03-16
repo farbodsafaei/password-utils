@@ -49,9 +49,7 @@ boolean result = PasswordUtils.verifyPassword(rawPassword, alreadyHashedPassword
 
 To generate a random password, simply call `generateRandomPassword(int length)` and pass a desired length or call `generateRandomPassword()` with no arguements which uses default length.
 
-Random password generator in this class can be used to create secure temporary passwords. It uses a random combination of letters, numbers and special characters to generate a password. Values are taken from ranges: `[A-Z] [a-z] [0-9]` and special characters:
- 
-```! "  #  $   %   &  '  (  )  *  +  ,  -  .  /  :  ;  <  =  >  ?  @ [  \  ]  ^  _  `  {  |  }  ~```   
+Random password generator in this class can be used to create secure temporary passwords. It uses a random combination of letters, numbers and special characters to generate a password. Values are taken from ranges: `[A-Z] [a-z] [0-9]` and special characters: `! "  #  $   %   &  '  (  )  *  +  ,  -  .  /  :  ;  <  =  >  ?  @ [  \  ]  ^  _  `  {  |  }  ~` 
 
  Example:
  ```java
