@@ -60,7 +60,7 @@ public final class PasswordUtils {
     private static final int HASH_SECTION_ALGORITHM_INDEX = 0;
     private static final int HASH_SECTION_SALT_INDEX = 1;
     private static final int DEFAULT_SALT_SEED_SIZE = 16;
-    private static final int DEFAULT_RANDOM_PASSOWRD_LENGTH = 10;
+    private static final int DEFAULT_RANDOM_PASSWORD_LENGTH = 10;
     private static final String SECTION_SEPARATOR = ":";
     private static final String ERROR_NULL_PASSWORD = "Password is null or empty!";
     private static final SeedAlgorithm DEFAULT_RANDOM_SEED_ALGORITHM = SeedAlgorithm.SHA1PRNG;
@@ -91,7 +91,7 @@ public final class PasswordUtils {
         }
     }
     
-    private static String generateformattedHash(final String hash, final String salt, HashAlgorithm algorithm) {
+    private static String generateFormattedHash(final String hash, final String salt, HashAlgorithm algorithm) {
         StringBuilder result = new StringBuilder(algorithm.name());
         result.append(SECTION_SEPARATOR).append(salt).append(SECTION_SEPARATOR).append(hash);
         return result.toString();
@@ -106,7 +106,7 @@ public final class PasswordUtils {
      * @return randomly generated password with default length
      */
     public static String generateRandomPassword() {
-        return generateRandomPassword(DEFAULT_RANDOM_PASSOWRD_LENGTH);
+        return generateRandomPassword(DEFAULT_RANDOM_PASSWORD_LENGTH);
     }
 
     /**
@@ -129,7 +129,7 @@ public final class PasswordUtils {
         final int digit = 3;
 
         if (length <= 0) {
-            length = DEFAULT_RANDOM_PASSOWRD_LENGTH;
+            length = DEFAULT_RANDOM_PASSWORD_LENGTH;
         }
         
         Random random = new Random();
@@ -273,7 +273,7 @@ public final class PasswordUtils {
         }        
         byte[] salt = generateRandomSalt();
         String hash = createHashedPassword(rawPassword, salt, algorithm);
-        return generateformattedHash(hash, Base64.getEncoder().encodeToString(salt), algorithm);
+        return generateFormattedHash(hash, Base64.getEncoder().encodeToString(salt), algorithm);
     }
 
     
@@ -311,7 +311,7 @@ public final class PasswordUtils {
         HashAlgorithm algorithm = HashAlgorithm.valueOf(suppliedPasswordArray[HASH_SECTION_ALGORITHM_INDEX]);
         byte[] salt = Base64.getDecoder().decode(suppliedPasswordArray[HASH_SECTION_SALT_INDEX]);
         String hash = createHashedPassword(rawPassword, salt, algorithm);
-        String tempHashedPassword = generateformattedHash(hash, Base64.getEncoder().encodeToString(salt), algorithm);
+        String tempHashedPassword = generateFormattedHash(hash, Base64.getEncoder().encodeToString(salt), algorithm);
         if (tempHashedPassword.equals(hashedPassword)) {
             result = true;
         }
