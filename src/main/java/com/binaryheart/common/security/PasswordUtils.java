@@ -20,19 +20,22 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 import com.binaryheart.common.exception.InvalidHashException;
 
 /**
  * PasswordUtils is a fast, simple, and lightweight utility class containing 
- * series of methods for creating, comparing, and generating secure passwords 
- * to be stored on database or used for other purposes. It uses Java's latest 
- * built-in hashing algorithms and is independent of any other libraries.
+ * series of methods for creating, comparing, hashing and random generating 
+ * secure passwords to be stored on database or used for other purposes. It 
+ * uses Java's latest built-in hashing algorithms and is independent of any 
+ * other libraries.
  * 
  * <p>
- * All the passwords are salted and hashed using a selectable hash algorithm. 
- * The secure salted and hashed passwords are generated in the below format 
- * to be used in the applications as desired:
+ * For hashing, all passwords are salted and hashed using a selectable hash 
+ * algorithm. The secure salted and hashed passwords are generated in the 
+ * below format to be used in the applications as desired:
  * <p>
  * 
  * {@code algorithm:salt:hash}
@@ -46,6 +49,8 @@ import com.binaryheart.common.exception.InvalidHashException;
  * 
  * {@code SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==}
  * 
+ * <p>See documentation for random password generation and other utility methods.</p>
+ * 
  * @author Farbod Safaei - farbod@binaryheart.com
  *
  */
@@ -55,11 +60,21 @@ public final class PasswordUtils {
     private static final int HASH_SECTION_ALGORITHM_INDEX = 0;
     private static final int HASH_SECTION_SALT_INDEX = 1;
     private static final int DEFAULT_SALT_SEED_SIZE = 16;
+    private static final int DEFAULT_RANDOM_PASSOWRD_LENGTH = 10;
     private static final String SECTION_SEPARATOR = ":";
     private static final String ERROR_NULL_PASSWORD = "Password is null or empty!";
     private static final SeedAlgorithm DEFAULT_RANDOM_SEED_ALGORITHM = SeedAlgorithm.SHA1PRNG;
     private static final HashAlgorithm DEFAULT_HASH_ALGORITHM = HashAlgorithm.SHA256;
-
+    private static final int LOWER_CASE_LETTER_ASCII_START = 97;
+    private static final int LOWER_CASE_LETTER_ASCII_END = 122;
+    private static final int UPPER_CASE_LETTER_ASCII_START = 65;
+    private static final int UPPER_CASE_LETTER_ASCII_END = 90;
+    private static final int DIGIT_ASCII_START = 48;
+    private static final int DIGIT_ASCII_END = 57;
+    private static final char[] SPECIAL_CHARACTER_ARRAY = {0x0021, 0x0022, 0x0023, 0x0024, 0x0025, 0x0026, 0x0027, 0x0028, 0x0029 , 
+            0x002A, 0x002B, 0x002C, 0x002D, 0x002E, 0x002F, 0x003A, 0x003B, 0x003C, 0x003F, 0x0040, 0x005B, 0x005C, 0x005D, 0x005E, 
+            0x005F, 0x0060, 0x007B, 0x007C, 0x007D, 0x007E};
+    
     // No reason to instantiate
     private PasswordUtils() {}
     
@@ -76,8 +91,137 @@ public final class PasswordUtils {
         }
     }
     
+    private static String generateformattedHash(final String hash, final String salt, HashAlgorithm algorithm) {
+        StringBuilder result = new StringBuilder(algorithm.name());
+        result.append(SECTION_SEPARATOR).append(salt).append(SECTION_SEPARATOR).append(hash);
+        return result.toString();
+    }
+    
     /**
-     * Generates a hashed password for the given raw password string
+     * Generates a random password of default length
+     * 
+     * <p>To make the generated password readable, 'space' character 
+     * is excluded.</p> 
+     * 
+     * @return randomly generated password with default length
+     */
+    public static String generateRandomPassword() {
+        return generateRandomPassword(DEFAULT_RANDOM_PASSOWRD_LENGTH);
+    }
+
+    /**
+     * Generates a random password with a given length
+     * 
+     * <p>Random passwords are created from a combination of
+     * alphabet letters, numbers and special characters. To make the generated 
+     * password readable, 'space' character is excluded.</p> 
+     * 
+     * @param length    Desired length of password
+     * 
+     * @return  randomly generated password  
+     */
+    public static String generateRandomPassword(int length) {
+
+        // Simple order of character types for randomizing/shuffling
+        final int lowerCaseLetter = 0;
+        final int upperCaseLetter = 1;
+        final int specialCharacter = 2;
+        final int digit = 3;
+
+        if (length <= 0) {
+            length = DEFAULT_RANDOM_PASSOWRD_LENGTH;
+        }
+        
+        Random random = new Random();
+        StringBuilder result = new StringBuilder();
+        IntStream stream = random.ints(length, lowerCaseLetter, digit + 1);
+        stream.forEach((IntStream) -> {
+            switch (IntStream) {
+            case lowerCaseLetter:
+                result.append(getRandomSingleCharacterFromRange(random, LOWER_CASE_LETTER_ASCII_START,
+                        LOWER_CASE_LETTER_ASCII_END));
+                break;
+            case upperCaseLetter:
+                result.append(getRandomSingleCharacterFromRange(random, UPPER_CASE_LETTER_ASCII_START,
+                        UPPER_CASE_LETTER_ASCII_END));
+                break;
+            case digit:
+                result.append(getRandomSingleCharacterFromRange(random, DIGIT_ASCII_START, DIGIT_ASCII_END));
+                break;
+            case specialCharacter:
+                result.append(getRandomSpecialCharacterFromArray(random));
+                break;
+            }
+        });
+        return result.toString();
+    }
+
+    /**
+     * Generates a salt value using the default seed size provided in this class.
+     * 
+     * <p>Note: To preserve consistency seed size should not be changed.</p>
+     * 
+     * This method uses "SHA1PRNG" algorithm to generate the salt
+     * 
+     * @return Base64 encoded salt value
+     * 
+     * @throws IllegalArgumentException
+     *          If seed algorithm does not exist
+     */
+    private static byte[] generateRandomSalt() throws IllegalArgumentException {
+        return generateRandomSalt(DEFAULT_RANDOM_SEED_ALGORITHM, DEFAULT_SALT_SEED_SIZE);
+    }
+    
+    /**
+     * Generates a salt value using a seed algorithm and a seed size
+     *          
+     * @param seedAlgorithm
+     *          A value from {@code SeedAlgorithm}
+     *           
+     * @param seedSize
+     *          Size of seed
+     *          
+     * @return  byte array of random generated salt
+     * 
+     * @throws IllegalArgumentException
+     *          If seed algorithm is not correct or does not exist
+     */
+    public static byte[] generateRandomSalt(SeedAlgorithm seedAlgorithm, final int seedSize) throws IllegalArgumentException {
+        try {
+            return SecureRandom.getInstance(seedAlgorithm.name()).generateSeed(seedSize);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    /*
+     * Character range: 
+     * 
+     * [A to Z]  Range:
+     *           hex: [0x0041 to 0x005A]
+     *           dec: [65 to 90]
+     *           
+     * [a to z] Range: 
+     *          hex: [0x0061 to 0x007A]
+     *          dec: [97 to 122]
+     *          
+     * [0 to 9] Range:
+     *          hex: [0x0030 to 0x0039]
+     *          dec: [48 to 57]
+     */
+    private static char getRandomSingleCharacterFromRange(final Random random, final int startInclusive, final int endInclusive) {
+        int randomValue = random.nextInt(endInclusive - startInclusive);
+        // type casting is safe here, result is 100% within char range 
+        return (char)(randomValue + startInclusive);
+    }
+
+    private static char getRandomSpecialCharacterFromArray(final Random random) {
+        int randomValue = random.nextInt(SPECIAL_CHARACTER_ARRAY.length);
+        return SPECIAL_CHARACTER_ARRAY[randomValue];
+    }
+
+    /**
+     * Hashes a given password string
      * 
      * It uses the default HashAlgorithm which is "SHA-256".
      * 
@@ -90,15 +234,15 @@ public final class PasswordUtils {
      * @throws IllegalArgumentException
      *            if the parameter is null or empty string
      */
-    public static String createPassword(final String rawPassword) throws IllegalArgumentException {
+    public static String hashPassword(final String rawPassword) throws IllegalArgumentException {
         if (rawPassword == null || rawPassword.isEmpty()) {
             throw new IllegalArgumentException(ERROR_NULL_PASSWORD);
         }
-        return createPassword(rawPassword, DEFAULT_HASH_ALGORITHM);
+        return hashPassword(rawPassword, DEFAULT_HASH_ALGORITHM);
     }
-
+    
     /**
-     * Generates a hashed password based on the given algorithm from {@link HashAlgorithm}.
+     * Hash a password string based on the given algorithm from {@link HashAlgorithm}.
      * Any values such as HashAlgorithm.MD2, HashAlgorithm.MD5, HashAlgorithm.SHA1, 
      * HashAlgorithm.SHA224, HashAlgorithm.SHA256, HashAlgorithm.SHA384, HashAlgorithm.SHA512
      * Can be used for generating secure passwords. A secure random seed will be generated 
@@ -123,7 +267,7 @@ public final class PasswordUtils {
      *            if rawPassword parameter is null or empty string
      *         
      */
-    public static String createPassword(final String rawPassword, HashAlgorithm algorithm) throws IllegalArgumentException {
+    public static String hashPassword(final String rawPassword, HashAlgorithm algorithm) throws IllegalArgumentException {
         if (rawPassword == null || rawPassword.isEmpty()) {
             throw new IllegalArgumentException(ERROR_NULL_PASSWORD);
         }        
@@ -132,50 +276,7 @@ public final class PasswordUtils {
         return generateformattedHash(hash, Base64.getEncoder().encodeToString(salt), algorithm);
     }
 
-    private static String generateformattedHash(final String hash, final String salt, HashAlgorithm algorithm) {
-        StringBuilder result = new StringBuilder(algorithm.name());
-        result.append(SECTION_SEPARATOR).append(salt).append(SECTION_SEPARATOR).append(hash);
-        return result.toString();
-    }
     
-    /**
-     * Generates a salt value using the default seed size provided in this class.
-     * 
-     * <p>Note: To preserve consistency seed size should not be changed.</p>
-     * 
-     * This method uses "SHA1PRNG" algorithm to generate the salt
-     * 
-     * @return Base64 encoded salt value
-     * 
-     * @throws IllegalArgumentException
-     *          If seed algorithm does not exist
-     */
-    private static byte[] generateRandomSalt() throws IllegalArgumentException {
-        return generateRandomSalt(DEFAULT_RANDOM_SEED_ALGORITHM, DEFAULT_SALT_SEED_SIZE);
-    }
-
-    /**
-     * Generates a salt value using a seed algorithm and a seed size
-     *          
-     * @param seedAlgorithm
-     *          A value from {@code SeedAlgorithm}
-     *           
-     * @param seedSize
-     *          Size of seed
-     *          
-     * @return  byte array of random generated salt
-     * 
-     * @throws IllegalArgumentException
-     *          If seed algorithm is not correct or does not exist
-     */
-    public static byte[] generateRandomSalt(SeedAlgorithm seedAlgorithm, final int seedSize) throws IllegalArgumentException {
-        try {
-            return SecureRandom.getInstance(seedAlgorithm.name()).generateSeed(seedSize);
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
     /**
      * Verifies a provided raw password (in plaintext, unsalted and not hashed)
      * by salting and hashing it and comparing it to a target value (usually 

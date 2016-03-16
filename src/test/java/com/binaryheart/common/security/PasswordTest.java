@@ -53,8 +53,19 @@ public class PasswordTest {
      */
     @Test
     public void createPasswordWithSHA512() {
-        String generatedPasswordHash = PasswordUtils.createPassword(RAW_PASSWORD, HashAlgorithm.SHA512);
+        String generatedPasswordHash = PasswordUtils.hashPassword(RAW_PASSWORD, HashAlgorithm.SHA512);
         Assert.assertNotEquals(FORMATTED_HASH, generatedPasswordHash);
     }
     
+    @Test
+    public void createRandomPasswordWithDefaultSize() {
+        String generatedPassword = PasswordUtils.generateRandomPassword();
+        Assert.assertEquals(10, generatedPassword.length());
+    }
+    
+    @Test
+    public void createRandomPassword() {
+        String generatedPassword = PasswordUtils.generateRandomPassword(15);
+        Assert.assertNotEquals(10, generatedPassword.length());
+    }
 }
