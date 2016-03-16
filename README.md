@@ -16,18 +16,14 @@ The first section is the name of the algorithm in plaintext. Second section is t
 SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==
 ```
 
-<<<<<<< Updated upstream
 Break-down of above line:  
 Algorithm: ```SHA512```  
 Salt (Base64): ```nkQfEBbs7FwwcADCq5UGtg==```  
 Hash (Base64): ```H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==```  
 
-#### How to
-=======
 #### How to hash a password
->>>>>>> Stashed changes
 
-Simply pass the raw password (in plaintext) to the ```createPassword()``` method with a desired hash algorithm:
+Simply pass the raw password (in plaintext) to the ```hashPassword()``` method with a desired hash algorithm:
 
 ```java
 String rawPassword = "badPassword1234";
@@ -57,8 +53,7 @@ boolean result = PasswordUtils.verifyPassword(rawPassword, alreadyHashedPassword
 
 #### How to generate a random password
 
-To generate a random password, simply call ```generateRandomPassword(int length)``` and pass a desired length or for fast usage call ```generateRandomPassword()``` which uses default length.
-
+To generate a random password, simply call ```generateRandomPassword(int length)``` and pass a desired length or call ```generateRandomPassword()``` with no arguements which uses default length.
 
 Random password generator in this class can be used to create secure temporary passwords. It uses a random combination of letters, numbers and special characters to generate a password. Values are taken from ranges: ```[A-Z] [a-z] [0-9]``` and special characters:
  
