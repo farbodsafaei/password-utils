@@ -23,10 +23,10 @@
 <a id="password-utils-" class="anchor" href="#password-utils-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>password-utils <a href="https://travis-ci.org/farbodsafaei/password-utils"><img src="https://travis-ci.org/farbodsafaei/password-utils.svg?branch=master" alt="Build Status"></a>
 </h1>
 
-<p>PasswordUtils is a fast, simple and lightweight utility class containing series of methods for creating, comparing, and generating secure passwords to be stored on database or used for other purposes. It uses Java's latest built-in hashing algorithms and is independent of any other libraries.</p>
+<p>PasswordUtils is a fast, simple and lightweight utility class containing series of methods for creating, comparing, hashing, and random generating secure passwords to be stored on database or used for other purposes. It uses Java's latest built-in hashing algorithms and is independent of any other libraries.</p>
 
 <h4>
-<a id="output-format" class="anchor" href="#output-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Output format</h4>
+<a id="hashing-output-format" class="anchor" href="#hashing-output-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hashing output format</h4>
 
 <p>All passwords are salted and hashed by selecting a desired hash algorithm. The secure salted and hashed passwords are generated in the below format to be used in the applications as desired:</p>
 
@@ -44,17 +44,17 @@ Salt (Base64): <code>nkQfEBbs7FwwcADCq5UGtg==</code><br>
 Hash (Base64): <code>H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==</code>  </p>
 
 <h4>
-<a id="how-to" class="anchor" href="#how-to" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to</h4>
+<a id="how-to-hash-a-password" class="anchor" href="#how-to-hash-a-password" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to hash a password</h4>
 
-<p>Simply pass the raw password (in plaintext) to the <code>createPassword()</code> method with a desired hash algorithm:</p>
+<p>Simply pass the raw password (in plaintext) to the <code>hashPassword()</code> method with a desired hash algorithm:</p>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">String</span> rawPassword <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>badPassword1234<span class="pl-pds">"</span></span>;
-<span class="pl-smi">String</span> result <span class="pl-k">=</span> <span class="pl-smi">PasswordUtils</span><span class="pl-k">.</span>createPassword(rawPassword, <span class="pl-smi">HashAlgorithm</span><span class="pl-c1"><span class="pl-k">.</span>SHA512</span>);</pre></div>
+<span class="pl-smi">String</span> result <span class="pl-k">=</span> <span class="pl-smi">PasswordUtils</span><span class="pl-k">.</span>hashPassword(rawPassword, <span class="pl-smi">HashAlgorithm</span><span class="pl-c1"><span class="pl-k">.</span>SHA512</span>);</pre></div>
 
 <p>For faster and easier usage, no algorithm is required to be passed and a default (SHA-256) hash algorithm will be used:</p>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">String</span> rawPassword <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>badPassword1234<span class="pl-pds">"</span></span>;
-<span class="pl-smi">String</span> result <span class="pl-k">=</span> <span class="pl-smi">PasswordUtils</span><span class="pl-k">.</span>createPassword(rawPassword);</pre></div>
+<span class="pl-smi">String</span> result <span class="pl-k">=</span> <span class="pl-smi">PasswordUtils</span><span class="pl-k">.</span>hashPassword(rawPassword);</pre></div>
 
 <p>The result string will contain a properly formatted password hash:  </p>
 
@@ -66,6 +66,15 @@ Hash (Base64): <code>H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkM
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">String</span> rawPassword <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>badPassword1234<span class="pl-pds">"</span></span>;
 <span class="pl-smi">String</span> alreadyHashedPassword <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==<span class="pl-pds">"</span></span>;
 <span class="pl-k">boolean</span> result <span class="pl-k">=</span> <span class="pl-smi">PasswordUtils</span><span class="pl-k">.</span>verifyPassword(rawPassword, alreadyHashedPassword);</pre></div>
+
+<h4>
+<a id="how-to-generate-a-random-password" class="anchor" href="#how-to-generate-a-random-password" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to generate a random password</h4>
+
+<p>To generate a random password, simply call <code>generateRandomPassword(int length)</code> and pass a desired length or call <code>generateRandomPassword()</code> with no arguements which uses default length.</p>
+
+<p>Random password generator in this class can be used to create secure temporary passwords. It uses a random combination of letters, numbers and special characters to generate a password. Values are taken from ranges: <code>[A-Z] [a-z] [0-9]</code> and special characters:</p>
+
+<p><code>! "  #  $   %   &amp;  '  (  )  *  +  ,  -  .  /  :  ;  &lt;  =  &gt;  ?  @ [  \  ]  ^  _  `  {  |  }  ~</code>   </p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/farbodsafaei/password-utils">password-utils</a> is maintained by <a href="https://github.com/farbodsafaei">farbodsafaei</a>.</span>
