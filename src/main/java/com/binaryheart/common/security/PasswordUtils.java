@@ -65,13 +65,13 @@ public final class PasswordUtils {
     private static final String ERROR_NULL_PASSWORD = "Password is null or empty!";
     private static final SeedAlgorithm DEFAULT_RANDOM_SEED_ALGORITHM = SeedAlgorithm.SHA1PRNG;
     private static final HashAlgorithm DEFAULT_HASH_ALGORITHM = HashAlgorithm.SHA256;
-    private static final int LOWER_CASE_LETTER_ASCII_START = 97;
-    private static final int LOWER_CASE_LETTER_ASCII_END = 122;
-    private static final int UPPER_CASE_LETTER_ASCII_START = 65;
-    private static final int UPPER_CASE_LETTER_ASCII_END = 90;
-    private static final int DIGIT_ASCII_START = 48;
-    private static final int DIGIT_ASCII_END = 57;
-    private static final char[] SPECIAL_CHARACTER_ARRAY = {0x0021, 0x0022, 0x0023, 0x0024, 0x0025, 0x0026, 0x0027, 0x0028, 0x0029 , 
+    private static final int LOWER_CASE_LETTER_UTF_CODE_START = 97;
+    private static final int LOWER_CASE_LETTER_UTF_CODE_END = 122;
+    private static final int UPPER_CASE_LETTER_UTF_CODE_START = 65;
+    private static final int UPPER_CASE_LETTER_UTF_CODE_END = 90;
+    private static final int DIGIT_UTF_CODE_START = 48;
+    private static final int DIGIT_UTF_CODE_END = 57;
+    private static final char[] SPECIAL_CHARACTER_UTF_CODE_ARRAY = {0x0021, 0x0022, 0x0023, 0x0024, 0x0025, 0x0026, 0x0027, 0x0028, 0x0029 , 
             0x002A, 0x002B, 0x002C, 0x002D, 0x002E, 0x002F, 0x003A, 0x003B, 0x003C, 0x003F, 0x0040, 0x005B, 0x005C, 0x005D, 0x005E, 
             0x005F, 0x0060, 0x007B, 0x007C, 0x007D, 0x007E};
     
@@ -138,15 +138,15 @@ public final class PasswordUtils {
         stream.forEach((IntStream) -> {
             switch (IntStream) {
             case lowerCaseLetter:
-                result.append(getRandomSingleCharacterFromRange(random, LOWER_CASE_LETTER_ASCII_START,
-                        LOWER_CASE_LETTER_ASCII_END));
+                result.append(getRandomSingleCharacterFromRange(random, LOWER_CASE_LETTER_UTF_CODE_START,
+                        LOWER_CASE_LETTER_UTF_CODE_END));
                 break;
             case upperCaseLetter:
-                result.append(getRandomSingleCharacterFromRange(random, UPPER_CASE_LETTER_ASCII_START,
-                        UPPER_CASE_LETTER_ASCII_END));
+                result.append(getRandomSingleCharacterFromRange(random, UPPER_CASE_LETTER_UTF_CODE_START,
+                        UPPER_CASE_LETTER_UTF_CODE_END));
                 break;
             case digit:
-                result.append(getRandomSingleCharacterFromRange(random, DIGIT_ASCII_START, DIGIT_ASCII_END));
+                result.append(getRandomSingleCharacterFromRange(random, DIGIT_UTF_CODE_START, DIGIT_UTF_CODE_END));
                 break;
             case specialCharacter:
                 result.append(getRandomSpecialCharacterFromArray(random));
@@ -216,8 +216,8 @@ public final class PasswordUtils {
     }
 
     private static char getRandomSpecialCharacterFromArray(final Random random) {
-        int randomValue = random.nextInt(SPECIAL_CHARACTER_ARRAY.length);
-        return SPECIAL_CHARACTER_ARRAY[randomValue];
+        int randomValue = random.nextInt(SPECIAL_CHARACTER_UTF_CODE_ARRAY.length);
+        return SPECIAL_CHARACTER_UTF_CODE_ARRAY[randomValue];
     }
 
     /**
