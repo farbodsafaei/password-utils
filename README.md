@@ -23,10 +23,10 @@ Simply pass the raw password (in plaintext) to the `hashPassword()` method with 
 
 ```java
 String rawPassword = "badPassword1234";
-String result = PasswordUtils.hashPassword(rawPassword, HashAlgorithm.SHA512);
+String result = PasswordUtils.hashPassword(rawPassword, HashAlgorithm.PBKDF2WITHHMACSHA512);
 ```
 
-For faster and easier usage, no algorithm is required to be passed and a default (SHA-256) hash algorithm will be used:
+For faster and easier usage, no algorithm is required to be passed and a default (PBKDF2WithHmacSHA256) hash algorithm will be used:
   
 ```java
 String rawPassword = "badPassword1234";
