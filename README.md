@@ -1,6 +1,6 @@
 # password-utils [![Build Status](https://travis-ci.org/farbodsafaei/password-utils.svg?branch=master)](https://travis-ci.org/farbodsafaei/password-utils)
 
-PasswordUtils is a fast, simple and lightweight utility class containing series of methods for creating, comparing, hashing, and random generating secure passwords to be stored on database or used for other purposes. It uses Java's latest built-in hashing algorithms and is independent of any other libraries.
+PasswordUtils is a fast, simple and lightweight utility class containing series of methods for creating, comparing, hashing, and random generating secure passwords to be stored on database or used for other purposes. It uses Java's latest built-in hashing algorithms and is independent of any other libraries. Check [API documentation](http://farbodsafaei.github.io/password-utils/target/site/apidocs/) for details.
 
 #### Hashing output format
 
