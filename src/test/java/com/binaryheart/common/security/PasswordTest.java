@@ -31,13 +31,16 @@ public class PasswordTest {
     /*
      * Following raw password and salt and hashed result have been previously generated
      * sha512HashedWithSalt is basically the result of rawPassword hashed with the base64EncodedSalt 
+     * 
+     * Note: following values are generated using default values for salt seed, key size and iterations. If those values change
+     * the password verification test will fail!
      */
     String RAW_PASSWORD = "badPassword1234";
-    String BASE64_ENCODED_SALT = "nkQfEBbs7FwwcADCq5UGtg==";
-    String SHA512_WITH_SALT = "LT99LKWP4b+1l9Hmxl5eTPxtpBJWPYfyacggHJcQ6vv6B6vvH+4+GJMeopVAxZs63EVv6Jtbr538yWJMHWhy2A==";
-    String FORMATTED_HASH = "SHA512:nkQfEBbs7FwwcADCq5UGtg==:LT99LKWP4b+1l9Hmxl5eTPxtpBJWPYfyacggHJcQ6vv6B6vvH+4+GJMeopVAxZs63EVv6Jtbr538yWJMHWhy2A==";
-    String FORMATTED_HASH_2 = "SHA512:U0lkelJEbDlHVDdKSkdpNElMNVhTZz09:o1KEo42sfcOCiUHaXxfFY5det8H0rtPq848TVrOqITpHL50aT+tOKrnkUsFMh/GpNV1o02z39xUe6IItIRud0g==";
-    String BASE64_ENCODED_SALT_2 = "U0lkelJEbDlHVDdKSkdpNElMNVhTZz09";
+    String BASE64_ENCODED_SALT = "Gbf2cL/XUqItqaXr4P5//A==:";
+    String PBKDF2WITHHMACSHA512_WITH_SALT = "tn2M44bFJBAGrMbvqlZB88KwtywIsRlGx8c5o25PdQ2RbOlum/1Oqz8jL3Rr31HW56Jv81HnhScpcCNZuF8AFA==";
+    String FORMATTED_HASH = "PBKDF2WITHHMACSHA512:Gbf2cL/XUqItqaXr4P5//A==:tn2M44bFJBAGrMbvqlZB88KwtywIsRlGx8c5o25PdQ2RbOlum/1Oqz8jL3Rr31HW56Jv81HnhScpcCNZuF8AFA==";
+    String FORMATTED_HASH_2 = "PBKDF2WITHHMACSHA512:amtsQmttJqy3Y6fb6x4A9g==:gfGnWJxhRMMEIjEPueKPIpkK4fo6l/rtIgb0pUFKPfoQagUbQ756uoSkLzo26kJu0yPDwO9B8KqMFyF8J1iWqA==";
+    String BASE64_ENCODED_SALT_2 = "amtsQmttJqy3Y6fb6x4A9g==";
 
     /**
      * Password verification test
@@ -53,7 +56,7 @@ public class PasswordTest {
      */
     @Test
     public void createPasswordWithSHA512() {
-        String generatedPasswordHash = PasswordUtils.hashPassword(RAW_PASSWORD, HashAlgorithm.SHA512);
+        String generatedPasswordHash = PasswordUtils.hashPassword(RAW_PASSWORD, HashAlgorithm.PBKDF2WITHHMACSHA512);
         Assert.assertNotEquals(FORMATTED_HASH, generatedPasswordHash);
     }
     

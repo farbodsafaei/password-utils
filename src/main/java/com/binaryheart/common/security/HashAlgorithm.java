@@ -16,49 +16,46 @@
 package com.binaryheart.common.security;
 
 /**
- * Hash algorithms singleton. 
+ * PBKDF2 (Password-Based Key Derivation Function 2) algorithms singleton.
  * 
- * This class contains constants of hash algorithms supported by {@link java.security.MessageDigest} class
- *  
+ * This class contains constants of algorithms supported by
+ * {@link javax.crypto.SecretKeyFactory} class.
+ * 
  * @author Farbod Safaei
  *
  */
 public enum HashAlgorithm {
 
+ 
     /**
-     * String representation of MD2 algorithm
+     * String representation of  algorithm
      */
-    MD2("MD2"),
-
-    /**
-     * String representation of MD5 algorithm
-     */
-    MD5("MD5"),
-
-    /**
-     * String representation of SHA-1 algorithm
-     */
-    SHA1("SHA-1"),
-
-    /**
-     * String representation of SHA-224 algorithm
-     */
-    SHA224("SHA-224"),
-
-    /**
-     * String representation of SHA-256 algorithm
-     */
-    SHA256("SHA-256"),
-
-    /**
-     * String representation of SHA-384 algorithm
-     */
-    SHA384("SHA-384"),
+    PBKDF2WITHHMACMD5("PBKDF2WithHmacMD5"),
     
     /**
-     * String representation of SHA-512 algorithm
+     * String representation of  algorithm
      */
-    SHA512("SHA-512");
+    PBKDF2WITHHMACSHA1("PBKDF2WithHmacSHA1"),
+    
+    /**
+     * String representation of  algorithm
+     */
+    PBKDF2WITHHMACSHA224("PBKDF2WithHmacSHA224"),
+    
+    /**
+     * String representation of  algorithm
+     */
+    PBKDF2WITHHMACSHA256("PBKDF2WithHmacSHA256"),
+    
+    /**
+     * String representation of  algorithm
+     */
+    PBKDF2WITHHMACSHA384("PBKDF2WithHmacSHA384"),
+    
+    /**
+     * String representation of  algorithm
+     */
+    PBKDF2WITHHMACSHA512("PBKDF2WithHmacSHA512");
     
     private HashAlgorithm(String s) {
         this.algorithm = s;

@@ -4,18 +4,18 @@ PasswordUtils is a fast, simple and lightweight utility class containing series 
 
 #### Hashing output format
 
-All passwords are salted and hashed by selecting a desired hash algorithm. The secure salted and hashed passwords are generated in the below format to be used in the applications as desired:
+All passwords are salted and hashed by selecting a desired hash algorithm using PBKDF2. The secure salted and hashed passwords are generated in the below format to be used in the applications as desired:
 
 `algorithm:salt:hash`
 
 The first section is the name of the algorithm in plaintext. Second section is the salt value encoded in Based64 and third section is the hashed value of the raw password and salt combined then encoded in Base64. The separator character is a ':' (colon character). Example:
 
-`SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==`
+`PBKDF2WITHHMACSHA512:Gbf2cL/XUqItqaXr4P5//A==:tn2M44bFJBAGrMbvqlZB88KwtywIsRlGx8c5o25PdQ2RbOlum/1Oqz8jL3Rr31HW56Jv81HnhScpcCNZuF8AFA==`
 
 Break-down of above line:  
-Algorithm: ```SHA512```  
-Salt (Base64): ```nkQfEBbs7FwwcADCq5UGtg==```  
-Hash (Base64): ```H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==```  
+Algorithm: ```PBKDF2WITHHMACSHA512```  
+Salt (Base64): ```Gbf2cL/XUqItqaXr4P5//A==```  
+Hash (Base64): ```tn2M44bFJBAGrMbvqlZB88KwtywIsRlGx8c5o25PdQ2RbOlum/1Oqz8jL3Rr31HW56Jv81HnhScpcCNZuF8AFA==```  
 
 #### How to hash a password
 
@@ -35,13 +35,13 @@ String result = PasswordUtils.hashPassword(rawPassword);
 
 The result string will contain a properly formatted password hash:  
 
-`SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==`
+`PBKDF2WITHHMACSHA512:Gbf2cL/XUqItqaXr4P5//A==:tn2M44bFJBAGrMbvqlZB88KwtywIsRlGx8c5o25PdQ2RbOlum/1Oqz8jL3Rr31HW56Jv81HnhScpcCNZuF8AFA==`
 
 To verify a raw password (in plaintext) with a hashed password (with the same format created using this class) simply use `verifyPassword()` method:
 
 ```java
 String rawPassword = "badPassword1234";
-String alreadyHashedPassword = "SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==";
+String alreadyHashedPassword = "PBKDF2WITHHMACSHA512:amtsQmttJqy3Y6fb6x4A9g==:gfGnWJxhRMMEIjEPueKPIpkK4fo6l/rtIgb0pUFKPfoQagUbQ756uoSkLzo26kJu0yPDwO9B8KqMFyF8J1iWqA==";
 boolean result = PasswordUtils.verifyPassword(rawPassword, alreadyHashedPassword);
 ```
 
