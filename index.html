@@ -28,18 +28,18 @@
 <h4>
 <a id="hashing-output-format" class="anchor" href="#hashing-output-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hashing output format</h4>
 
-<p>All passwords are salted and hashed by selecting a desired hash algorithm. The secure salted and hashed passwords are generated in the below format to be used in the applications as desired:</p>
+<p>All passwords are salted and hashed by selecting a desired hash algorithm using PBKDF2. The secure salted and hashed passwords are generated in the below format to be used in the applications as desired:</p>
 
 <p><code>algorithm:salt:hash</code></p>
 
 <p>The first section is the name of the algorithm in plaintext. Second section is the salt value encoded in Based64 and third section is the hashed value of the raw password and salt combined then encoded in Base64. The separator character is a ':' (colon character). Example:</p>
 
-<p><code>SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==</code></p>
+<p><code>PBKDF2WITHHMACSHA512:Gbf2cL/XUqItqaXr4P5//A==:tn2M44bFJBAGrMbvqlZB88KwtywIsRlGx8c5o25PdQ2RbOlum/1Oqz8jL3Rr31HW56Jv81HnhScpcCNZuF8AFA==</code></p>
 
 <p>Break-down of above line:<br>
-Algorithm: <code>SHA512</code><br>
-Salt (Base64): <code>nkQfEBbs7FwwcADCq5UGtg==</code><br>
-Hash (Base64): <code>H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==</code>  </p>
+Algorithm: <code>PBKDF2WITHHMACSHA512</code><br>
+Salt (Base64): <code>Gbf2cL/XUqItqaXr4P5//A==</code><br>
+Hash (Base64): <code>tn2M44bFJBAGrMbvqlZB88KwtywIsRlGx8c5o25PdQ2RbOlum/1Oqz8jL3Rr31HW56Jv81HnhScpcCNZuF8AFA==</code>  </p>
 
 <h4>
 <a id="how-to-hash-a-password" class="anchor" href="#how-to-hash-a-password" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to hash a password</h4>
@@ -47,21 +47,21 @@ Hash (Base64): <code>H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkM
 <p>Simply pass the raw password (in plaintext) to the <code>hashPassword()</code> method with a desired hash algorithm:</p>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">String</span> rawPassword <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>badPassword1234<span class="pl-pds">"</span></span>;
-<span class="pl-smi">String</span> result <span class="pl-k">=</span> <span class="pl-smi">PasswordUtils</span><span class="pl-k">.</span>hashPassword(rawPassword, <span class="pl-smi">HashAlgorithm</span><span class="pl-c1"><span class="pl-k">.</span>SHA512</span>);</pre></div>
+<span class="pl-smi">String</span> result <span class="pl-k">=</span> <span class="pl-smi">PasswordUtils</span><span class="pl-k">.</span>hashPassword(rawPassword, <span class="pl-smi">HashAlgorithm</span><span class="pl-c1"><span class="pl-k">.</span>PBKDF2WITHHMACSHA512</span>);</pre></div>
 
-<p>For faster and easier usage, no algorithm is required to be passed and a default (SHA-256) hash algorithm will be used:</p>
+<p>For faster and easier usage, no algorithm is required to be passed and a default (PBKDF2WithHmacSHA256) hash algorithm will be used:</p>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">String</span> rawPassword <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>badPassword1234<span class="pl-pds">"</span></span>;
 <span class="pl-smi">String</span> result <span class="pl-k">=</span> <span class="pl-smi">PasswordUtils</span><span class="pl-k">.</span>hashPassword(rawPassword);</pre></div>
 
 <p>The result string will contain a properly formatted password hash:  </p>
 
-<p><code>SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==</code></p>
+<p><code>PBKDF2WITHHMACSHA512:Gbf2cL/XUqItqaXr4P5//A==:tn2M44bFJBAGrMbvqlZB88KwtywIsRlGx8c5o25PdQ2RbOlum/1Oqz8jL3Rr31HW56Jv81HnhScpcCNZuF8AFA==</code></p>
 
 <p>To verify a raw password (in plaintext) with a hashed password (with the same format created using this class) simply use <code>verifyPassword()</code> method:</p>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">String</span> rawPassword <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>badPassword1234<span class="pl-pds">"</span></span>;
-<span class="pl-smi">String</span> alreadyHashedPassword <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>SHA512:nkQfEBbs7FwwcADCq5UGtg==:H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkMBddQEzRd9sNDCACZZsflh42IyCw==<span class="pl-pds">"</span></span>;
+<span class="pl-smi">String</span> alreadyHashedPassword <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>PBKDF2WITHHMACSHA512:amtsQmttJqy3Y6fb6x4A9g==:gfGnWJxhRMMEIjEPueKPIpkK4fo6l/rtIgb0pUFKPfoQagUbQ756uoSkLzo26kJu0yPDwO9B8KqMFyF8J1iWqA==<span class="pl-pds">"</span></span>;
 <span class="pl-k">boolean</span> result <span class="pl-k">=</span> <span class="pl-smi">PasswordUtils</span><span class="pl-k">.</span>verifyPassword(rawPassword, alreadyHashedPassword);</pre></div>
 
 <h4>
@@ -69,9 +69,8 @@ Hash (Base64): <code>H/Bg9EQfNXrPybVLXBg9MNx1hB2VHM9db5Fwzvlx3i1k53lOEJM9eTofCkM
 
 <p>To generate a random password, simply call <code>generateRandomPassword(int length)</code> and pass a desired length or call <code>generateRandomPassword()</code> with no arguements which uses default length.</p>
 
-<p>Random password generator in this class can be used to create secure temporary passwords. It uses a random combination of letters, numbers and special characters to generate a password. Values are taken from ranges: <code>[A-Z] [a-z] [0-9]</code> and special characters:</p>
-
-<p><code>! "  #  $   %   &amp;  '  (  )  *  +  ,  -  .  /  :  ;  &lt;  =  &gt;  ?  @ [  \  ]  ^  _  `  {  |  }  ~</code>   </p>
+<p>Random password generator in this class can be used to create secure temporary passwords. It uses a random combination of letters, numbers and special characters to generate a password. Values are taken from ranges: <code>[A-Z] [a-z] [0-9]</code> and special characters: 
+<code>! "  #  $   %   &amp;  '  (  )  *  +  ,  -  .  /  :  ;  &lt;  =  &gt;  ?  @ [  \  ]  ^  _  `  {  |  }  ~</code> </p>
 
 <p>Example:</p>
 
