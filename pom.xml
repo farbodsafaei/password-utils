@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.binaryheart.common</groupId>
 	<artifactId>password-utils</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>password-utils</name>
 	<description>A lightweight password class containging utility methods for creating, comparing, hashing and random generating secure passwords</description>
 	<url>https://github.com/farbodsafaei/password-utils</url>
